@@ -1,0 +1,41 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Colors</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Image</th>
+      <th>Rgb</th>
+      <th>Red</th>
+      <th>Green</th>
+      <th>Blue</th>
+      <th>Alpha</th>
+      <th>Score</th>
+      <th>Pixel fraction</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @colors.each do |color| %>
+      <tr>
+        <td><%= color.image_id %></td>
+        <td><%= color.rgb %></td>
+        <td><%= color.red %></td>
+        <td><%= color.green %></td>
+        <td><%= color.blue %></td>
+        <td><%= color.alpha %></td>
+        <td><%= color.score %></td>
+        <td><%= color.pixel_fraction %></td>
+        <td><%= link_to 'Show', color %></td>
+        <td><%= link_to 'Edit', edit_color_path(color) %></td>
+        <td><%= link_to 'Destroy', color, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Color', new_color_path %>

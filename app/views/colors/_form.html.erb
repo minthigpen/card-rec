@@ -1,0 +1,57 @@
+<%= form_with(model: color, local: true) do |form| %>
+  <% if color.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(color.errors.count, "error") %> prohibited this color from being saved:</h2>
+
+      <ul>
+      <% color.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :image_id %>
+    <%= form.number_field :image_id, id: :color_image_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :rgb %>
+    <%= form.text_field :rgb, id: :color_rgb %>
+  </div>
+
+  <div class="field">
+    <%= form.label :red %>
+    <%= form.text_field :red, id: :color_red %>
+  </div>
+
+  <div class="field">
+    <%= form.label :green %>
+    <%= form.text_field :green, id: :color_green %>
+  </div>
+
+  <div class="field">
+    <%= form.label :blue %>
+    <%= form.text_field :blue, id: :color_blue %>
+  </div>
+
+  <div class="field">
+    <%= form.label :alpha %>
+    <%= form.text_field :alpha, id: :color_alpha %>
+  </div>
+
+  <div class="field">
+    <%= form.label :score %>
+    <%= form.text_field :score, id: :color_score %>
+  </div>
+
+  <div class="field">
+    <%= form.label :pixel_fraction %>
+    <%= form.text_field :pixel_fraction, id: :color_pixel_fraction %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

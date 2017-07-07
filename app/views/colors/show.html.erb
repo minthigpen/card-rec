@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Image:</strong>
+  <%= @color.image_id %>
+</p>
+
+<p>
+  <strong>Rgb:</strong>
+  <%= @color.rgb %>
+</p>
+
+<p>
+  <strong>Red:</strong>
+  <%= @color.red %>
+</p>
+
+<p>
+  <strong>Green:</strong>
+  <%= @color.green %>
+</p>
+
+<p>
+  <strong>Blue:</strong>
+  <%= @color.blue %>
+</p>
+
+<p>
+  <strong>Alpha:</strong>
+  <%= @color.alpha %>
+</p>
+
+<p>
+  <strong>Score:</strong>
+  <%= @color.score %>
+</p>
+
+<p>
+  <strong>Pixel fraction:</strong>
+  <%= @color.pixel_fraction %>
+</p>
+
+<%= link_to 'Edit', edit_color_path(@color) %> |
+<%= link_to 'Back', colors_path %>

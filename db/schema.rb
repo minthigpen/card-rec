@@ -10,7 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170707195732) do
+ActiveRecord::Schema.define(version: 20170707214016) do
+
+  create_table "colors", force: :cascade do |t|
+    t.integer "image_id"
+    t.string "rgb"
+    t.float "red"
+    t.float "green"
+    t.float "blue"
+    t.float "alpha"
+    t.float "score"
+    t.float "pixel_fraction"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "images", force: :cascade do |t|
     t.integer "pp_id"

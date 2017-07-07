@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  image_id: 1
+  rgb: MyString
+  red: 1.5
+  green: 1.5
+  blue: 1.5
+  alpha: 1.5
+  score: 1.5
+  pixel_fraction: 1.5
+
+two:
+  image_id: 1
+  rgb: MyString
+  red: 1.5
+  green: 1.5
+  blue: 1.5
+  alpha: 1.5
+  score: 1.5
+  pixel_fraction: 1.5
