@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170707214016) do
+ActiveRecord::Schema.define(version: 20170707221326) do
 
   create_table "colors", force: :cascade do |t|
     t.integer "image_id"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 20170707214016) do
     t.string "url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "type"
   end
 
 end

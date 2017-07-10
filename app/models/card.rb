@@ -1,0 +1,4 @@
+class Card < Image
+
+
+end
