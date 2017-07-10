@@ -4,6 +4,12 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile '~/.gitignore_global'
 
+# Ignore images
+/app/assets/images/primary-img
+/app/assets/images/backdrop-img
+
+.DS_Store
+
 # Ignore bundler config.
 /.bundle
 

@@ -20,29 +20,41 @@ namespace :import do
     project_id = "backdrop-rec"
     # set up a new client
     vision = Google::Cloud::Vision.new project: project_id
-    counter = 1
+    counter = 862
+
+    error_array = Array.new
+
     # for each object in the Background class get color data and insert them into 
     # Color table to be associated with each background
     klass.all.each do |k|
+
       url = k.url
-      puts "Importing color profile number #{counter} of #{klass}"
-      # set_colors = ### get color data
-      img  = vision.image url
-      img.properties.colors.each do |color|
-        k.colors.create(rgb: color.rgb, red: color.red, green: color.green, blue: color.blue, 
-          alpha: color.alpha, score: color.score, pixel_fraction: color.pixel_fraction)
+      puts url
+      begin
+        puts "Importing color profile number #{counter} of #{k}"
+        img  = vision.image url
+        img.properties.colors.each do |color|
+          k.colors.create(rgb: color.rgb, red: color.red, green: color.green, blue: color.blue, 
+            alpha: color.alpha, score: color.score, pixel_fraction: color.pixel_fraction)
+        end
+        counter += 1
+      rescue => e
+        puts e.message
+        puts e.backtrace
+        error_array.push(url)
       end
-      counter += 1
+
       
     end
     puts "Success! You've gotten the color profile of each image of #{klass}"
+    puts "These links have not been imported: #{error_array}"
   end
 
   desc "Import card_backgrounds"
   task card_backgrounds: :environment do
     require 'net/http'
     # array to catch the exceptions 
-    errorArray = Array.new
+    error_array = Array.new
     total_pages = import_page_json(Background, "https://www.paperlesspost.com/api/v1/card_backgrounds.json")
 
     2.upto(total_pages) do |page_num|
@@ -51,19 +63,19 @@ namespace :import do
       begin
         import_page_json(Background, "https://www.paperlesspost.com/api/v1/card_backgrounds.json", page_num)
       rescue JSON::ParserError
-        errorArray.push(page_num)
+        error_array.push(page_num)
         puts "There was a JSON Parser Error !!! and page #{page_num} could not be imported :("
       end
     end
 
-    puts "Import complete! The following pages could not be imported #{errorArray}"
+    puts "Import complete! The following pages could not be imported #{error_array}"
   end
 
   desc "Import cards"
   task cards: :environment do
     require 'net/http'
     # array to catch the exceptions 
-    errorArray = Array.new
+    error_array = Array.new
     total_pages = import_page_json(Card, 'https://www.paperlesspost.com/api/v1/new_papers.json')
     puts "The total page number is #{total_pages}"
     puts "Importing page 1"
@@ -77,18 +89,20 @@ namespace :import do
       begin 
         import_page_json(Card, 'https://www.paperlesspost.com/api/v1/new_papers.json', page_num)
       rescue JSON::ParserError
-        errorArray.push(page_num)
+        error_array.push(page_num)
         puts "There was a JSON Parser Error !!! and page #{page_num} could not be imported :("
       end
     end
-    puts "Import complete! The following pages could not be imported #{errorArray}"
+    puts "Import complete! The following pages could not be imported #{error_array}"
   end
 
 
   desc "Import colors"
   task colors: :environment do
-    import_color_profile(Background)
-    import_color_profile(Card)
+    # import_color_profile(Background)
+    cards_without_color = Card.left_outer_joins(:colors).where('colors.id' => nil)
+    import_color_profile(cards_without_color)
+
   end
 
 
