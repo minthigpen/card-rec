@@ -14,6 +14,30 @@ namespace :import do
     result["total_pages"]
   end
 
+  def import_color_profile (klass)
+    # Google Vision API project-id and requirements (authorized through Google SDK login)
+    require "google/cloud/vision"
+    project_id = "backdrop-rec"
+    # set up a new client
+    vision = Google::Cloud::Vision.new project: project_id
+    counter = 1
+    # for each object in the Background class get color data and insert them into 
+    # Color table to be associated with each background
+    klass.all.each do |k|
+      url = k.url
+      puts "Importing color profile number #{counter} of #{klass}"
+      # set_colors = ### get color data
+      img  = vision.image url
+      img.properties.colors.each do |color|
+        k.colors.create(rgb: color.rgb, red: color.red, green: color.green, blue: color.blue, 
+          alpha: color.alpha, score: color.score, pixel_fraction: color.pixel_fraction)
+      end
+      counter += 1
+      
+    end
+    puts "Success! You've gotten the color profile of each image of #{klass}"
+  end
+
   desc "Import card_backgrounds"
   task card_backgrounds: :environment do
     require 'net/http'
@@ -62,14 +86,21 @@ namespace :import do
 
 
   desc "Import colors"
-  task
-  #     Background.all.each do |bg|
-  #   url = bg.url
-  #   set_colors = ### get color data
-  #   set_colors.each do |color|
-  #     bg.colors.create(red: color.red, green: color.green ....)
-  #   end
-  # end
+  task colors: :environment do
+    import_color_profile(Background)
+    import_color_profile(Card)
+  end
 
 
 end
+
+
+
+
+
+
+
+
+
+
+
