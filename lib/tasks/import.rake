@@ -17,10 +17,12 @@ namespace :import do
   def import_color_profile (klass)
     # Google Vision API project-id and requirements (authorized through Google SDK login)
     require "google/cloud/vision"
+    require "open-uri"
+    require "addressable/uri"
     project_id = "backdrop-rec"
     # set up a new client
     vision = Google::Cloud::Vision.new project: project_id
-    counter = 862
+    counter = 0
 
     error_array = Array.new
 
@@ -29,6 +31,7 @@ namespace :import do
     klass.all.each do |k|
 
       url = k.url
+      k_id = k.id
       puts url
       begin
         puts "Importing color profile number #{counter} of #{k}"
@@ -41,7 +44,29 @@ namespace :import do
       rescue => e
         puts e.message
         puts e.backtrace
-        error_array.push(url)
+        
+        # Download the image and run that shit on the image stored locally
+        # handle all errors, and print those out in the end with the images with broken links
+        begin
+          # parse the URL
+          uri = Addressable::URI.parse(url)
+          # write to file and store locally
+          File.open('#{k_id}.gif', 'wb') do |fo|
+            fo.write open(uri).read 
+          end
+          img_path = '#{k_id}.gif'
+          # get the color profile
+          puts "Importing color profile number #{counter} of #{k}"
+          img  = vision.image img_path
+          img.properties.colors.each do |color|
+            k.colors.create(rgb: color.rgb, red: color.red, green: color.green, blue: color.blue, 
+              alpha: color.alpha, score: color.score, pixel_fraction: color.pixel_fraction)
+          end
+          counter += 1
+        rescue => e
+          puts e.message
+          error_array.push([e, k_id, url])
+        end
       end
 
       

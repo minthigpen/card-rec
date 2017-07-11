@@ -1,10 +1,11 @@
 class ImagesController < ApplicationController
   before_action :set_image, only: [:show, :edit, :update, :destroy]
+  before_action :set_klass
 
   # GET /images
   # GET /images.json
   def index
-    @images = Image.all
+    @images = @klass.all
   end
 
   # GET /images/1
@@ -14,7 +15,7 @@ class ImagesController < ApplicationController
 
   # GET /images/new
   def new
-    @image = Image.new
+    @image = @klass.new
   end
 
   # GET /images/1/edit
@@ -24,7 +25,7 @@ class ImagesController < ApplicationController
   # POST /images
   # POST /images.json
   def create
-    @image = Image.new(image_params)
+    @image = @klass.new(image_params)
 
     respond_to do |format|
       if @image.save
@@ -62,9 +63,14 @@ class ImagesController < ApplicationController
   end
 
   private
+
+    def set_klass
+      @klass = params["img_type"].constantize
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_image
-      @image = Image.find(params[:id])
+      @image = @klass.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
