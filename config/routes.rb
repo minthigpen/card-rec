@@ -7,5 +7,7 @@ Rails.application.routes.draw do
 
   resources :images, only: [:index]
   root to: "images#index"
+  resources :colors, only: [:index]
+  root to: "colors#index"
 
 end
