@@ -7,7 +7,8 @@ end
 
 # import google vision api
 gem 'google-cloud-vision'
-
+# 
+gem 'will_paginate', '>= 3.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.2'
