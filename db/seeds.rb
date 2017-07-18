@@ -5,3 +5,7 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+Rule.create([{ name: 'compl_color' }, { name: "similarity" }, { name: "highlight" }, { name: "analogous_color" }, { name: "contrast" }])
+
+# bin/rake db:seed

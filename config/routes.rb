@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :surveys
   resources :colors
   resources :images, controller: 'images', img_type: 'Image'
   resources :cards, controller: 'images', img_type: 'Card'
