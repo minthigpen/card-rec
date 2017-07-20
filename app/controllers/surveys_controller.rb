@@ -14,6 +14,12 @@ class SurveysController < ApplicationController
 
   # GET /surveys/new
   def new
+   
+    # get card
+    @card = params[:card_id] ? Card.find(params[:card_id]) : Card.order("RANDOM()").first
+    @card.initialize_matches_and_mark_best_scores unless @card.matches.any? 
+    @matches = @card.best_matches
+    # get 
     @survey = Survey.new
   end
 

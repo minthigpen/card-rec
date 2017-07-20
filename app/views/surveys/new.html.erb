@@ -1,7 +1,44 @@
-<h1>New Survey</h1>
 
-<%= render 'form', survey: @survey %>
+<style type="text/css">
+.card {
+  position: absolute; 
+  top: 0; left: 0;
+}
+.background {
+	width: 1440px;
+	height: 700px;
+  background-repeat: repeat;
 
-<%= link_to 'Back', surveys_path %>
+}
+</style>
+
+
+<div class="background">
+	<div class="card">
+
+	</div>
+</div>
+
+<%= image_tag @card.url%>
+
+
+<%= render 'form', survey: @survey %> 
+
+<p>or</p> 
+
+<FORM>
+<INPUT TYPE="button" onClick="history.go(0)" VALUE="Regenerate Another Random Card">
+</FORM>
+
+<%- @matches.each do |m| %>
+  <%= render 'background_selection', match: m%>
+<%-end%>
+
+
+
+
+
+
+
 
 
