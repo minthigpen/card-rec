@@ -15,12 +15,18 @@ class SurveysController < ApplicationController
   # GET /surveys/new
   def new
    
-    # get card
+    # get card and make matches and store those in instance variable 
     @card = params[:card_id] ? Card.find(params[:card_id]) : Card.order("RANDOM()").first
     @card.initialize_matches_and_mark_best_scores unless @card.matches.any? 
-    @matches = @card.best_matches
-    # get 
-    @survey = Survey.new
+    @matches = @card.best_matches.order(:rule_id)
+
+    @survey = Survey.create(@card)
+  end
+
+  def specific
+    card_id = params[:card_id]
+
+    redirect_to action: 'new', card_id: card_id
   end
 
   # GET /surveys/1/edit

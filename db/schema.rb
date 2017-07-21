@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 20170714221833) do
 
   create_table "responses", force: :cascade do |t|
     t.integer "card_id"
+    t.integer "survey_id"
     t.integer "rule_id"
     t.boolean "selected"
     t.datetime "created_at", null: false

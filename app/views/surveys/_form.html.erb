@@ -11,12 +11,16 @@
     </div>
   <% end %>
 
-  <div class="field">
+<!--   <div class="field">
     <%= form.label :card_id %>
     <%= form.number_field :card_id, id: :survey_card_id %>
-  </div>
+  </div> -->
 
-  <div class="actions">
-    <%= form.submit value: "Enter new_paper_id" %>
+
+  <div class="background">
+    <%- @survey.responses.each do |r| %>
+      <%= render 'background_selection', match: m, form: form%>
+      
+    <%-end%>
   </div>
 <% end %>

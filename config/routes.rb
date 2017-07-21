@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  resources :surveys
+  resources :surveys do
+    collection do
+      post :specific
+    end
+  end
   resources :colors
   resources :images, controller: 'images', img_type: 'Image'
   resources :cards, controller: 'images', img_type: 'Card'

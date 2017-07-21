@@ -2,9 +2,6 @@ class Color < ApplicationRecord
 
  belongs_to :image
 
- def er
-  10
- end
 
   # convert RGB values to HSV values returns array, hsv
   def to_hsv
@@ -13,9 +10,9 @@ class Color < ApplicationRecord
 
     hsv = Array.new
 
-    var_R = ( red / 255 )
-    var_G = ( green / 255 )
-    var_B = ( blue / 255 )
+    var_R = (red / 255)
+    var_G = (green / 255)
+    var_B = (blue / 255)
 
     var_Min = [var_R, var_G, var_B].min    # Min. value of RGB
     var_Max = [var_R, var_G, var_B].max    # Max. value of RGB
@@ -48,12 +45,19 @@ class Color < ApplicationRecord
       h-= 1 if h > 1
     end
 
+    h = h*360
+
     # return tuple in form of [H,S, V]
     hsv.push(h)
     hsv.push(s)
     hsv.push(v)
+    hsv.push(score)
+    hsv.push(pixel_fraction)
 
     hsv
 
+  end
+
+  def get_avg_color
   end
 end

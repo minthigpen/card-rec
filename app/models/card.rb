@@ -12,11 +12,6 @@ class Card < Image
     matches.where(best_score: true)
   end
 
-  # def to_s
-  #   backgrounds.inject("") do |str, b|
-  #     str += " #{b.id}"
-  #   end
-  # end
 
   private
 
