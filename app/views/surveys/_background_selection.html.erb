@@ -1,5 +1,6 @@
 
 <%= image_tag match.background.url%>
 <%= match.rule.name%>
-<%= check_box_tag '#{match.id}'%>
+<%= hidden_field_tag "match_selection[#{match.id}]", '0' %>
+<%= check_box_tag "match_selection[#{match.id}]"%>
 

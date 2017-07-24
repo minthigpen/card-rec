@@ -25,7 +25,6 @@ class SurveysController < ApplicationController
 
   def specific
     card_id = params[:card_id]
-
     redirect_to action: 'new', card_id: card_id
   end
 
@@ -39,10 +38,11 @@ class SurveysController < ApplicationController
     # { survey: { card_id: 123, responses: [{ match_id: 5, selected: true}, {match_id: 1, selected: false} ... ] } }
     # check_box name: "responses[]" 
 
-    card = Card.find(survey_params[:card_id])
-    @survey = Survey.create(card)
-    survey_params[:responses].each do |r|
-      @survey.responses.create(match_id: r.match_id, selected: r.selected)
+
+    @survey = Survey.create(@card)
+    @survey.save!
+    params[:match_selection].each do |match_id_string, value_string|
+      @survey.responses.create(match_id: match_id_string.to_i, selected: value_string == '1' ? true : false)
     end
     # OR
     # @survey.init_responses(survey_params[:responses])
@@ -93,6 +93,7 @@ class SurveysController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def survey_params
-      params.require(:survey).permit(:card_id, :responses)
+      # params.require(:survey).permit(:card_id, :responses)
+      params.permit(:card_id, :match_selection)
     end
 end

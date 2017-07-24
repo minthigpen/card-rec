@@ -16,6 +16,6 @@
     <%- @matches.each do |m| %>
       <%= render 'background_selection', match: m, form: form%>
     <%-end%>
-    <%= form.button :submit, name: "responses", value: "update"%>
+    <%= form.button :submit, name: "responses"%>
   </div>
 <% end %>
