@@ -19,7 +19,9 @@ class Rule < ApplicationRecord
     # get the hue of the complimentary color 
     comp_hue = (best_card_color.first + 180) % 360
 
+
     card_color = [comp_hue, best_card_color[1],best_card_color[2]]
+    puts "HSV for COMPLEMENTARY COLOR IS #{card_color}"
 
     # get difference of colors and that's the score
     cd = get_color_diff(card_color,best_background_color)
@@ -41,8 +43,9 @@ class Rule < ApplicationRecord
   def self.highlight(card, background)
     # get the card and background color with the highest score and convert to hsv
     # best_card_color = get_best_color_hsv(card.colors)
-    # best_background_color = get_best_color_hsv(background.colors)
+    best_background_color = get_best_color_hsv(background.colors)
     rand
+
   end
 
   def self.analogous_color(card, background)
@@ -83,9 +86,9 @@ class Rule < ApplicationRecord
     h1,s1,v1 = hue2[0],hue2[1], hue2[2]
     # distance between two hues
     dh = [(h1-h0).abs,(360-(h1-h0).abs)].min/180.0
-    puts dh
+
     ds = (s1-s0).abs
-    dv = (v1-v0).abs/255.0
+    dv = (v1-v0).abs
 
     # Each of these values will be in the range [0,1]. You can compute the length of this tuple:
 

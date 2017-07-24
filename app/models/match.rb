@@ -4,13 +4,4 @@ class Match < ApplicationRecord
   belongs_to :background
   belongs_to :rule
 
-
-  private
-
-
-
-
-
-
-
 end

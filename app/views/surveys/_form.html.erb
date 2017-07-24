@@ -14,8 +14,8 @@
 
   <div class="background">
     <%- @matches.each do |m| %>
-      <%= render 'background_selection', match: m, form: form%>
+      <%= render 'background_selection', match: m, card: @card%>
     <%-end%>
-    <%= form.button :submit, name: "responses"%>
+    <%= form.button :submit%>
   </div>
 <% end %>
