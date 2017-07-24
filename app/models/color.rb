@@ -58,6 +58,4 @@ class Color < ApplicationRecord
 
   end
 
-  def get_avg_color
-  end
 end

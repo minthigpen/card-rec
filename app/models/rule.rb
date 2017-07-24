@@ -8,9 +8,12 @@ class Rule < ApplicationRecord
   # the complementary color of the card's 'main color'
   def self.compl_color(card, background)
 
+    # there are several different colors that you could find the complement of - either the most highest score color or highest pixel fraction color 
+      # though edge case is that often the most dominant colors are the white background of a card.
+
     # get the most dominant colors for cards and backgrounds
-    # card_colors = card.colors.where('pixel_fraction > ?', PIX_FRAC_THRESHOLD).where('score > ?', SCORE_THRESHOLD)
-    # background_colors = background.colors.where('pixel_fraction > ?', PIX_FRAC_THRESHOLD).where('score > ?', SCORE_THRESHOLD)
+    card_colors = card.colors.where('pixel_fraction > ?', PIX_FRAC_THRESHOLD).where('score > ?', SCORE_THRESHOLD)
+    background_colors = background.colors.where('pixel_fraction > ?', PIX_FRAC_THRESHOLD).where('score > ?', SCORE_THRESHOLD)
 
     # get the card and background color with the highest score and convert to hsv
     best_card_color = get_best_color_hsv(card.colors)
@@ -18,33 +21,34 @@ class Rule < ApplicationRecord
 
     # get the hue of the complimentary color 
     comp_hue = (best_card_color.first + 180) % 360
+    # also get the comp_value and comp_saturation ***********
 
-
+    # if card color is lighter than
     card_color = [comp_hue, best_card_color[1],best_card_color[2]]
+    puts "HSV best card color is #{best_card_color}"
+    puts "HSV best background color is #{best_background_color}"
     puts "HSV for COMPLEMENTARY COLOR IS #{card_color}"
 
     # get difference of colors and that's the score
     cd = get_color_diff(card_color,best_background_color)
-    puts "THE COLOR DIFF FOR COMP COLOR IS"
-    puts cd
+
 
   end
 
   def self.similarity(card, background)
-    # get the card and background color with the highest score and convert to hsv
+    # need to take into account similar color profile instead of just single color swatch that is the most dominant
+
+    # take into account both score and pixel fraction
+
+  end
+
+  def self.highlight(card, background)
+    # highlights just take the color that is the most dominant (regardless of pixel fraction and picks a background that highlights this color
     best_card_color = get_best_color_hsv(card.colors)
     best_background_color = get_best_color_hsv(background.colors)
 
     # maybe consider lower saturation?
     get_color_diff(best_card_color, best_background_color)
-
-  end
-
-  def self.highlight(card, background)
-    # get the card and background color with the highest score and convert to hsv
-    # best_card_color = get_best_color_hsv(card.colors)
-    best_background_color = get_best_color_hsv(background.colors)
-    rand
 
   end
 
@@ -75,13 +79,22 @@ class Rule < ApplicationRecord
   # input colors
   def self.get_best_color_hsv (colors)
     # get the color with max score
+
     best_color = colors.max_by {|x| x.score}
     # convert to hsv
     best_color.to_hsv
-
   end
+
     # input two HSV tuples (h0,s0,v0) and (h1,s1,v1)
   def self.get_color_diff(hue1,hue2)
+    # convert from HSV to RGB to XYZ to CIEL*ab then take the delta E
+
+
+
+
+
+    # just take the cartesian distance of two HSV tuples
+
     h0,s0,v0 = hue1[0],hue1[1], hue1[2]
     h1,s1,v1 = hue2[0],hue2[1], hue2[2]
     # distance between two hues
