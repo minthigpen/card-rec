@@ -6,13 +6,15 @@
 	</div>
 
 
-
+<!-- Form to enter the survey responses -->
 <%= render 'form', survey: @survey %> 
 
 
+<!-- Form to take you to new survey with specific card id -->
 <%= form_with url: specific_surveys_path do |f| %>
   <%= f.text_field :card_id %>
-  <%= f.submit value: "Enter new_paper_id" %>
+  <%= f.submit value: "Enter card_id" %>
+  <!-- Need to enter new paper id -->
 <% end %>
 
 <p>or</p> 
@@ -20,10 +22,6 @@
 <FORM>
 <INPUT TYPE="button" onClick="history.go(0)" VALUE="Regenerate Another Random Card">
 </FORM>
-
-
-
-
 
 
 

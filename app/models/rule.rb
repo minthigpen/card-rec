@@ -22,7 +22,9 @@ class Rule < ApplicationRecord
     card_color = [comp_hue, best_card_color[1],best_card_color[2]]
 
     # get difference of colors and that's the score
-    get_color_diff(card_color,best_background_color)
+    cd = get_color_diff(card_color,best_background_color)
+    puts "THE COLOR DIFF FOR COMP COLOR IS"
+    puts cd
 
   end
 

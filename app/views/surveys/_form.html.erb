@@ -11,16 +11,11 @@
     </div>
   <% end %>
 
-<!--   <div class="field">
-    <%= form.label :card_id %>
-    <%= form.number_field :card_id, id: :survey_card_id %>
-  </div> -->
-
 
   <div class="background">
-    <%- @survey.responses.each do |r| %>
+    <%- @matches.each do |m| %>
       <%= render 'background_selection', match: m, form: form%>
-      
     <%-end%>
+    <%= form.button :submit, name: "responses", value: "update"%>
   </div>
 <% end %>

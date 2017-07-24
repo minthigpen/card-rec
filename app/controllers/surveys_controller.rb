@@ -20,7 +20,7 @@ class SurveysController < ApplicationController
     @card.initialize_matches_and_mark_best_scores unless @card.matches.any? 
     @matches = @card.best_matches.order(:rule_id)
 
-    @survey = Survey.create(@card)
+    @survey = Survey.new
   end
 
   def specific
@@ -36,7 +36,19 @@ class SurveysController < ApplicationController
   # POST /surveys
   # POST /surveys.json
   def create
-    @survey = Survey.new(survey_params)
+    # { survey: { card_id: 123, responses: [{ match_id: 5, selected: true}, {match_id: 1, selected: false} ... ] } }
+    # check_box name: "responses[]" 
+
+    card = Card.find(survey_params[:card_id])
+    @survey = Survey.create(card)
+    survey_params[:responses].each do |r|
+      @survey.responses.create(match_id: r.match_id, selected: r.selected)
+    end
+    # OR
+    # @survey.init_responses(survey_params[:responses])
+
+
+    # @survey = Survey.new(survey_params)
 
     respond_to do |format|
       if @survey.save
@@ -81,6 +93,6 @@ class SurveysController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def survey_params
-      params.require(:survey).permit(:card_id)
+      params.require(:survey).permit(:card_id, :responses)
     end
 end

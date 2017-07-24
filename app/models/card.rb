@@ -31,8 +31,8 @@ class Card < Image
 
   def mark_best_scores
     Rule.all.each do |r|
-      
-      best_match = self.matches.where(rule: r).order(score: :desc).first
+      # get the score that's the lowest because that's the background image with the smallest difference from target color space
+      best_match = self.matches.where(rule: r).order(score: :desc).last
       best_match.best_score = true
       best_match.save!
     end
