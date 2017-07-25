@@ -5,6 +5,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end 
 
+gem 'pg'
 
 gem 'awesome_print'
 # import google vision api
@@ -45,11 +46,11 @@ group :development, :test do
   gem 'capybara', '~> 2.13'
   gem 'selenium-webdriver'
   # Use sqlite3 as the database for Active Record
-  gem 'sqlite3'
+
 end
 
 group :staging, :production do
-  gem 'pg'
+
 end
 
 
@@ -64,3 +65,5 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+ruby "2.2.2"
