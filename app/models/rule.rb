@@ -9,7 +9,7 @@ class Rule < ApplicationRecord
   def self.compl_color(card, background)
 
     # there are several different colors that you could find the complement of - either the most highest score color or highest pixel fraction color 
-      # though edge case is that often the most dominant colors are the white background of a card.
+      # though edge case is that often the most dominant colors are the white background of a card. make this a method so that you can reuse for analagous
 
     # get the most dominant colors for cards and backgrounds
     card_colors = card.colors.where('pixel_fraction > ?', PIX_FRAC_THRESHOLD).where('score > ?', SCORE_THRESHOLD)
@@ -33,13 +33,17 @@ class Rule < ApplicationRecord
     cd = get_color_diff(card_color,best_background_color)
 
 
+
   end
 
   def self.similarity(card, background)
     # need to take into account similar color profile instead of just single color swatch that is the most dominant
 
     # take into account both score and pixel fraction
-
+    # get the most dominant colors for cards and backgrounds
+    card_colors = card.colors.where('pixel_fraction > ?', PIX_FRAC_THRESHOLD).where('score > ?', SCORE_THRESHOLD)
+    background_colors = background.colors.where('pixel_fraction > ?', PIX_FRAC_THRESHOLD).where('score > ?', SCORE_THRESHOLD)
+    rand
   end
 
   def self.highlight(card, background)
@@ -73,13 +77,23 @@ class Rule < ApplicationRecord
 
   def self.contrast(card, background)
     # highest contrast comes from getting the a combination of Hue and Saturation and Lightness
+
+    # finds the maximum distance on both H, S, V
+
+    # account for white and black
+    # account for greys
+    # account for low saturation
+    # account of hue difference
+    # account for neutrals 
+    # account for 
+
+
     rand
   end
 
   # input colors
   def self.get_best_color_hsv (colors)
     # get the color with max score
-
     best_color = colors.max_by {|x| x.score}
     # convert to hsv
     best_color.to_hsv
@@ -87,13 +101,13 @@ class Rule < ApplicationRecord
 
     # input two HSV tuples (h0,s0,v0) and (h1,s1,v1)
   def self.get_color_diff(hue1,hue2)
-    # convert from HSV to RGB to XYZ to CIEL*ab then take the delta E
+    # convert from HSV to RGB to XYZ to CIEL*ab then take the DELTA E
 
 
 
 
 
-    # just take the cartesian distance of two HSV tuples
+    # CARTESIAN DISTANCE BETWEEN TWO HSV TUPLES
 
     h0,s0,v0 = hue1[0],hue1[1], hue1[2]
     h1,s1,v1 = hue2[0],hue2[1], hue2[2]

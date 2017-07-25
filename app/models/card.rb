@@ -21,6 +21,7 @@ class Card < Image
       # create match for each rule
       Rule.all.each do |r|
 
+        
         score = Rule.send(r.name, self, b)
         # create new match obj
         self.matches << Match.create(background: b, rule: r, score: score, best_score: false)
