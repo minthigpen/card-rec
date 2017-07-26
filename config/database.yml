@@ -36,6 +36,7 @@ production:
   password: <%= ENV['CARDREC_PROD_DB_PASSWORD'] %>
 
 staging:
+  url: <%= ENV['HEROKU_POSTGRESQL_PURPLE_URL'] %>
   database: cardrec_staging
   username: <%= ENV['CARDREC_DB_USERNAME'] %>
   password: <%= ENV['CARDREC_DB_PASSWORD'] %>
