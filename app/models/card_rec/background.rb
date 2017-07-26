@@ -1,4 +1,3 @@
-
 module CardRec
   class Background < Image
 
