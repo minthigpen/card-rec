@@ -6,7 +6,8 @@ git_source(:github) do |repo_name|
 end 
 
 gem 'pg'
-
+# provide basic RGB, CMYK, HSL, and other colourspace manipulation support 
+gem 'color', '~> 1.8'
 gem 'awesome_print'
 # import google vision api
 gem 'google-cloud-vision'

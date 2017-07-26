@@ -61,6 +61,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
+    color (1.8)
     concurrent-ruby (1.0.5)
     erubi (1.6.1)
     execjs (2.7.0)
@@ -219,6 +220,7 @@ DEPENDENCIES
   byebug
   capybara (~> 2.13)
   coffee-rails (~> 4.2)
+  color (~> 1.8)
   google-cloud-vision
   jbuilder (~> 2.5)
   listen (>= 3.0.5, < 3.2)
@@ -239,4 +241,4 @@ RUBY VERSION
    ruby 2.2.2p95
 
 BUNDLED WITH
-   1.15.1
+   1.15.3

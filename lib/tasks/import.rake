@@ -124,9 +124,9 @@ namespace :import do
 
   desc "Import colors"
   task colors: :environment do
-    # import_color_profile(Background)
-    cards_without_color = Card.left_outer_joins(:colors).where('colors.id' => nil)
-    import_color_profile(cards_without_color)
+    import_color_profile(CardRec::Background)
+    # cards_without_color = Card.left_outer_joins(:colors).where('colors.id' => nil)
+    # import_color_profile(cards_without_color)
 
   end
 

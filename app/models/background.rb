@@ -1,4 +1,0 @@
-class Background < Image
-
-
-end
