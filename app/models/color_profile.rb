@@ -3,8 +3,8 @@ class ColorProfile < ApplicationRecord
  belongs_to :image
   # use ::Color module to convert to HSV
   def to_hsv
-    # rgb_obj = ::Color::RGB.new(Color.red, Color.green, Color.blue)
-    
+    rgb_obj = Color::RGB.new(red, green, blue)
+
     # hsv_obj = rgb_obj.
 
     # R, G and B input range = 0 ÷ 255

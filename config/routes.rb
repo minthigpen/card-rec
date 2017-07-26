@@ -10,9 +10,4 @@ Rails.application.routes.draw do
   resources :backgrounds, controller: 'images', img_type: 'Background'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
-  # resources :images, only: [:index]
-  # root to: "images#index"
-  # resources :colors, only: [:index]
-  # root to: "colors#index"
-
 end

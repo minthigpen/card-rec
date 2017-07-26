@@ -46,8 +46,8 @@ class Rule < ApplicationRecord
     diff = []
 
     # sort by score
-    c = card.to_a.sort{|a, b| a.score > b.score}
-    b = background.colors.to_a.sort {|a, b| a.score > b.score}
+    c = card.colors.sort{|a, b| a.score > b.score}
+    b = background.colors.sort {|a, b| a.score > b.score}
     # sort by pixel fraction
     card_colors_sorted = c.sort_by{ |a| -a.pixel_fraction}
 
@@ -132,7 +132,7 @@ class Rule < ApplicationRecord
   end
 
     # input two colors from the CIE Lab space
-  def self.get_color_diff(color1, color2)
+  def self.get_color_diff(hue1, hue2)
     # convert from HSV to RGB to XYZ to CIEL*ab then take the DELTA E using ::Color Module
 
 
