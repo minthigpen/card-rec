@@ -1,10 +1,10 @@
-class ColorsController < ApplicationController
+class ColorProfilesController < ApplicationController
   before_action :set_color, only: [:show, :edit, :update, :destroy]
 
   # GET /colors
   # GET /colors.json
   def index
-    @colors = Color.all.paginate(page: params[:page], per_page: 30)
+    @colors = ColorProfile.all.paginate(page: params[:page], per_page: 30)
   end
 
   # GET /colors/1
@@ -14,7 +14,7 @@ class ColorsController < ApplicationController
 
   # GET /colors/new
   def new
-    @color = Color.new
+    @color = ColorProfile.new
   end
 
   # GET /colors/1/edit
@@ -24,7 +24,7 @@ class ColorsController < ApplicationController
   # POST /colors
   # POST /colors.json
   def create
-    @color = Color.new(color_params)
+    @color = ColorProfile.new(color_params)
 
     respond_to do |format|
       if @color.save
@@ -42,7 +42,7 @@ class ColorsController < ApplicationController
   def update
     respond_to do |format|
       if @color.update(color_params)
-        format.html { redirect_to @color, notice: 'Color was successfully updated.' }
+        format.html { redirect_to @color, notice: 'ColorProfile was successfully updated.' }
         format.json { render :show, status: :ok, location: @color }
       else
         format.html { render :edit }
@@ -56,7 +56,7 @@ class ColorsController < ApplicationController
   def destroy
     @color.destroy
     respond_to do |format|
-      format.html { redirect_to colors_url, notice: 'Color was successfully destroyed.' }
+      format.html { redirect_to colors_url, notice: 'ColorProfile was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -64,7 +64,7 @@ class ColorsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_color
-      @color = Color.find(params[:id])
+      @color = ColorProfile.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

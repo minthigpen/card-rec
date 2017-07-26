@@ -6,6 +6,7 @@ class ColorProfile < ApplicationRecord
     rgb_obj = ::Color::RGB.new(Color.red, Color.green, Color.blue)
 
     # hsv_obj = rgb_obj.
+    
     # # R, G and B input range = 0 ÷ 255
     # # H, S and V output range = 0 ÷ 1.0
 
