@@ -1,6 +1,6 @@
-class CreateColors < ActiveRecord::Migration[5.1]
+class CreateColorProfiles < ActiveRecord::Migration[5.1]
   def change
-    create_table :colors do |t|
+    create_table :color_profile do |t|
       t.integer :image_id
       t.string :rgb
       t.float :red
