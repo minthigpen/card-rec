@@ -1,0 +1,6 @@
+
+
+class Background < Image
+
+
+end

@@ -65,7 +65,7 @@ class ImagesController < ApplicationController
   private
 
     def set_klass
-      @klass = "CardRec::#{params['img_type']}".constantize
+      @klass = params['img_type'].constantize
     end
 
     # Use callbacks to share common setup or constraints between actions.
