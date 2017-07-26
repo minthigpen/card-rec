@@ -18,7 +18,7 @@ default: &default
 development:
   <<: *default
   database: cardrec_dev
-  username: mthigpen
+  username: <%= ENV['CARDREC_DB_USERNAME'] %>
   password: <%= ENV['CARDREC_DB_PASSWORD'] %>
 
 # Warning: The database defined as "test" will be erased and
@@ -27,16 +27,16 @@ development:
 test:
   <<: *default
   database: cardrec_test
-  username: mthigpen
+  username: <%= ENV['CARDREC_DB_USERNAME'] %>
   password: <%= ENV['CARDREC_DB_PASSWORD'] %>
 
 production:
   database: cardrec_prod
-  username: mthigpen
+  username: <%= ENV['CARDREC_DB_USERNAME'] %>
   password: <%= ENV['CARDREC_PROD_DB_PASSWORD'] %>
 
 staging:
   database: cardrec_staging
-  username: mthigpen
+  username: <%= ENV['CARDREC_DB_USERNAME'] %>
   password: <%= ENV['CARDREC_DB_PASSWORD'] %>
 
