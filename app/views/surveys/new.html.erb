@@ -1,7 +1,7 @@
 <%= stylesheet_link_tag "new_survey" %>
   <h1>Card ID: <%= @card.id %>, New_Paper ID: <%= @card.pp_id%> </h1>
 
-	<div class="card_container">
+	<div id="card_container" class="card_container">
     <%= image_tag @card.url%>
     <%= render 'dominant_colors_swatch', color_profiles: @card_swatch_colors %>
 	</div>

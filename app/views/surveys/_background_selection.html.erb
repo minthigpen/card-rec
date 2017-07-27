@@ -1,5 +1,6 @@
-
-<%= image_tag match.background.url%>
+<div class="pp-background" data-url="<%= match.background.url %>">
+  <%= image_tag match.background.url%>
+</div>
 
 <%= render 'dominant_colors_swatch', color_profiles: match.normalized_colors %>
 
