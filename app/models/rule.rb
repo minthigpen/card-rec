@@ -21,71 +21,60 @@ class Rule < ApplicationRecord
   # the complementary color of the card's 'main color'
   def self.compl_color(card, background)
 
-    # sort colors related to card and background by score
-    card_colors = card.colors.sort{|a, b| a.score <=> b.score}
-    background_colors = background.colors.sort {|a, b| a.pixel_fraction <=> b.pixel_fraction}
-
-
-    # get the target complementary color of card color with highest score and highest pixel fraction
-    # NOTE: most highest pixel colors will be white
+    # sort card colors by score to get the 'main focus' color of the card since a lot of cards are on white backgrounds
+    card_colors = card.colors.sort{|a, b| a.score <=> b.score}.reverse!
+    # sort background colors by pixel fraction since backgrounds are simpler
+    background_colors = background.colors.sort {|a, b| a.pixel_fraction <=> b.pixel_fraction}.reverse!
 
     # convert to HSL in order to get the complement color
-    puts "COMPL COLOR RGB IS #{Color::RGB.new(card_colors.first.red.to_i, card_colors.first.green.to_i, card_colors.first.blue.to_i)}"
     compl_card_color = Color::RGB.new(card_colors.first.red.to_i, card_colors.first.green.to_i, card_colors.first.blue.to_i).to_hsl
-    puts "COMPL COLOR HSL IS #{compl_card_color}"
-    puts "BEFORE COMPL CARD COLOR HUE IS #{compl_card_color.hue}"
     compl_card_color.hue=(compl_card_color.hue+180)
-    puts "AFTER COMPL CARD COLOR HUE IS #{compl_card_color.hue}"
 
-    # compare each background color with the target complement color and get the minimum distance 
-    # NOTE: weight by score maybe instead of just iterate through all of them??? 
+    # get the difference of the target complementary color for the main card color and the background color with the highest pixel fraction
     best_background_color = Color::RGB.new(background_colors.first.red.to_i, background_colors.first.green.to_i, background_colors.first.blue.to_i)
-    puts "BEST BACKGROUND COLOR HAS PX of #{background_colors.first.pixel_fraction} and RGB #{best_background_color.red}, #{best_background_color.green}, #{best_background_color.blue}"
-
     get_color_diff(compl_card_color.to_rgb, best_background_color)
 
-    # what about grey scale?
     # # also get the comp_value and comp_saturation *********** --> this might be implemented in contrast
 
   end
 
+  # Match a card and background based on the color profiles for each that has the highest score 
+  # maybe include proportionality ?
   def self.similarity(card, background)
-    # sort colors related to card and background by score
-    card_colors = card.colors.sort{|a, b| a.score <=> b.score}
-    background_colors = background.colors.sort {|a, b| a.score <=> b.score}
-
+    # sort colors related to card and background by score and reverse to get a descending list
+    card_colors = card.colors.sort{|a, b| a.score <=> b.score}.reverse!
+    background_colors = background.colors.sort {|a, b| a.score <=> b.score}.reverse!
     # turn into rgb objects
     card_rgb = to_rgb_obj(card_colors)
     background_rgb = to_rgb_obj(background_colors)
 
-    # get the color differences of the most dominant colors and average them 
+    # get the color differences of the most dominant colors
     diff_colors_array = []
-
     0.upto([card_rgb.size, background_rgb.size].min - 1) do |index|
       diff_colors_array << get_color_diff(card_rgb[index][0], background_rgb[index][0])
     end
-
+    # return the average of the array
     diff_colors_array.inject(:+).to_f / diff_colors_array.size
   end
 
+  # Get a card's highlight color based on the second highest pixel_fraction and match it with a the highest scored background color
   def self.highlight(card, background)
-    # # highlights just take the color that is the most dominant (regardless of pixel fraction and picks a background that highlights this color
-        # sort colors related to card and background by score
-    card_colors = card.colors.sort{|a, b| a.pixel_fraction <=> b.pixel_fraction}
-    background_colors = background.colors.sort {|a, b| a.score <=> b.score}
-
+    # highlights just take the color that is the most dominant (regardless of pixel fraction and picks a background that highlights this color
+    # sort colors related to card and background by score
+    card_colors = card.colors.sort{|a, b| a.pixel_fraction <=> b.pixel_fraction}.reverse!
+    background_colors = background.colors.sort {|a, b| a.score <=> b.score}.reverse!
+    # convert the sorted array to an array of RGB objects
     card_rgb = to_rgb_obj(card_colors)
     background_rgb = to_rgb_obj(background_colors)
-
-
-    # get the second most highly scored color if the array contains more than one color
+    # set the card highlight color as card color with the second most pixel fraction if the array contains more than one color
     card_rgb.size > 1 ? card_highlight_rgb = card_rgb[1][0] : card_highlight_rgb = card_rgb[0][0]
-
-    # compare the highlight color to the main background rgb color with highest score
+    # compare the card highlight color to the main background rgb color with highest score
     get_color_diff(card_highlight_rgb, background_rgb[0][0])
 
   end
 
+  # Get a card's color profile and find a backdrop that is the most closely associated to 
+  # the analogous colors of the card's 'main color'
   def self.analogous_color(card, background)
      # get the card and background color with the highest score and convert to hsv
     # best_card_color = get_best_color_hsv(card.colors)
