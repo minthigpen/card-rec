@@ -1,7 +1,7 @@
 
 <%= image_tag match.background.url%>
 
-<%= render 'dominant_colors_swatch', color_profiles: match.background.colors.order(pixel_fraction: :desc) %>
+<%= render 'dominant_colors_swatch', color_profiles: match.normalized_colors %>
 
 <%= match.rule.name%>
 
