@@ -20,7 +20,6 @@ class Card < Image
     Background.all.each do |b|
       # create match for each rule
       Rule.all.each do |r|
-
         
         score = Rule.send(r.name, self, b)
         # create new match obj
@@ -34,6 +33,7 @@ class Card < Image
     Rule.all.each do |r|
       # get the score that's the lowest because that's the background image with the smallest difference from target color space
       best_match = self.matches.where(rule: r).order(score: :desc).last
+      puts "#{Background.find(best_match.background_id).colors.first}"
       best_match.best_score = true
       best_match.save!
     end

@@ -23,26 +23,26 @@ class Rule < ApplicationRecord
 
     # sort colors related to card and background by score
     card_colors = card.colors.sort{|a, b| a.score <=> b.score}
-    background_colors = background.colors.sort {|a, b| a.score <=> b.score}
-    # convert background color profiles to RGB objects
-    background_rgb = to_rgb_obj(background_colors)
+    background_colors = background.colors.sort {|a, b| a.pixel_fraction <=> b.pixel_fraction}
+
 
     # get the target complementary color of card color with highest score and highest pixel fraction
     # NOTE: most highest pixel colors will be white
 
     # convert to HSL in order to get the complement color
+    puts "COMPL COLOR RGB IS #{Color::RGB.new(card_colors.first.red.to_i, card_colors.first.green.to_i, card_colors.first.blue.to_i)}"
     compl_card_color = Color::RGB.new(card_colors.first.red.to_i, card_colors.first.green.to_i, card_colors.first.blue.to_i).to_hsl
+    puts "COMPL COLOR HSL IS #{compl_card_color}"
+    puts "BEFORE COMPL CARD COLOR HUE IS #{compl_card_color.hue}"
     compl_card_color.hue=(compl_card_color.hue+180)
-
-    diff = []
+    puts "AFTER COMPL CARD COLOR HUE IS #{compl_card_color.hue}"
 
     # compare each background color with the target complement color and get the minimum distance 
     # NOTE: weight by score maybe instead of just iterate through all of them??? 
-    background_rgb.map do |background_rgb_color|
-      diff << get_color_diff(compl_card_color.to_rgb,background_rgb_color[0])
-    end 
+    best_background_color = Color::RGB.new(background_colors.first.red.to_i, background_colors.first.green.to_i, background_colors.first.blue.to_i)
+    puts "BEST BACKGROUND COLOR HAS PX of #{background_colors.first.pixel_fraction} and RGB #{best_background_color.red}, #{best_background_color.green}, #{best_background_color.blue}"
 
-    diff.min
+    get_color_diff(compl_card_color.to_rgb, best_background_color)
 
     # what about grey scale?
     # # also get the comp_value and comp_saturation *********** --> this might be implemented in contrast
