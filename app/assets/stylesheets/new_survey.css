@@ -25,3 +25,13 @@
   padding: 30px 20px 0px 20px;
   background-repeat: repeat;
 }
+
+.dominant-colors {
+  height: 100px;
+  width: 100px;
+}
+
+.color-swatch {
+  height: 100%;
+  float: left;
+}
