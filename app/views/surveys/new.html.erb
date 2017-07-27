@@ -3,6 +3,7 @@
 
 	<div class="card_container">
     <%= image_tag @card.url%>
+    <%= render 'dominant_colors_swatch', color_profiles: @card_swatch_colors %>
 	</div>
 
 
