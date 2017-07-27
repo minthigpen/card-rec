@@ -1,11 +1,13 @@
-<div class="pp-background" data-url="<%= match.background.url %>">
-  <%= image_tag match.background.url%>
+<div class="match-selection">
+    <div class="pp-background" data-url="<%= match.background.url %>">
+        <%= image_tag match.background.url%>
+    </div>
+
+    <%= render 'dominant_colors_swatch', color_profiles: match.normalized_colors %>
+
+    <%= match.rule.name%>
+
+    <%= hidden_field_tag'card_id_string', "#{card.id}" %>
+    <%= hidden_field_tag "match_selection[#{match.id}]", '0' %>
+    <%= check_box_tag "match_selection[#{match.id}]"%>
 </div>
-
-<%= render 'dominant_colors_swatch', color_profiles: match.normalized_colors %>
-
-<%= match.rule.name%>
-
-<%= hidden_field_tag'card_id_string', "#{card.id}" %>
-<%= hidden_field_tag "match_selection[#{match.id}]", '0' %>
-<%= check_box_tag "match_selection[#{match.id}]"%>

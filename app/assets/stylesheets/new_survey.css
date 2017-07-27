@@ -28,10 +28,20 @@
 
 .dominant-colors {
   height: 50px;
+  margin: 30px auto;
   width: 200px;
 }
 
 .color-swatch {
   height: 100%;
   float: left;
+}
+
+.match-selection {
+  text-align: center;
+  flex-grow: 1;
+}
+
+.match-selection-container {
+  display: flex;
 }
