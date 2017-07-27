@@ -53,12 +53,16 @@ class Rule < ApplicationRecord
     # convert the sorted array to an array of RGB objects
     # card_rgb = to_rgb_obj(card_colors.last)
     background_rgb = to_rgb_obj([background_colors.first])
-    # set the card highlight color as card color with the second most pixel fraction if the array contains more than one color
-    # card_rgb.size > 1 ? card_highlight_rgb = card_rgb[1][0] : card_highlight_rgb = card_rgb[0][0]
-    card_highlight_rgb = to_rgb_obj([card_colors.last])
-    # compare the card highlight color to the main background rgb color with highest score
-    get_color_diff(card_highlight_rgb[0][0], background_rgb[0][0])
 
+    # convert card colors to RGB and then to HSL
+    card_colors.map! do |color|
+      Color::RGB.new(color.red.to_i, color.green.to_i, color.blue.to_i).to_hsl
+    end
+    # set the highlight color to be the color with highest saturation
+    card_highlight_rgb = card_colors.max_by(&:saturation).to_rgb
+
+    # compare the card highlight color to the main background rgb color with highest score
+    get_color_diff(card_highlight_rgb, background_rgb[0][0])
   end
 
   # Get a card's color profile and find a backdrop that is the most closely associated to 
