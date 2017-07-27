@@ -46,13 +46,14 @@ class Rule < ApplicationRecord
     diff = []
 
     # sort by score
-    c = card.colors.sort{|a, b| a.score > b.score}
-    b = background.colors.sort {|a, b| a.score > b.score}
+    c = card.colors.sort{|a, b| a.score <=> b.score}
+    b = background.colors.sort {|a, b| a.score <=> b.score}
     # sort by pixel fraction
     card_colors_sorted = c.sort_by{ |a| -a.pixel_fraction}
 
+    d = []
     0.upto([c.size, b.size].min - 1) do |index|
-      d <<  get_color_diff(c[index].to_hsv, b[index].to_hsv)
+      d << get_color_diff(c[index].to_hsv, b[index].to_hsv)
     end
 
 
@@ -66,14 +67,6 @@ class Rule < ApplicationRecord
     # background_colors.order(pixel_fraction: :desc).each do |back|
     #   b.push(back.to_hsv)
     # end
-
-
-
-    # store the differences and compute the avg
-    d = Array.new
-    d.push (get_color_diff(c.first.to_hsv, b.first.to_hsv))
-    d.push (get_color_diff(c.second.to_hsv,b.second.to_hsv))
-    d.push (get_color_diff(c.third.to_hsv, b.third.to_hsv))
 
     d.inject(:+).to_f / d.size
   end
