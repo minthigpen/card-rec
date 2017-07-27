@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  root controller: 'surveys', action: 'new'
+
   resources :surveys do
     collection do
       post :specific
