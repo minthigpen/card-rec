@@ -17,6 +17,7 @@ class SurveysController < ApplicationController
    
     # get card and make matches and store those in instance variable 
     @card = params[:card_id] ? Card.find(params[:card_id]) : Card.order("RANDOM()").first
+    @card_swatch_colors = SwatchPresenter.new(@card).normalized_colors
     @card.initialize_matches_and_mark_best_scores unless @card.matches.any? 
     @matches = @card.best_matches.order(:rule_id).includes(background: :colors).map{ |match| MatchPresenter.new(match) }
 
