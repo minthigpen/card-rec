@@ -72,17 +72,19 @@ class Rule < ApplicationRecord
     # convert to HSL in order to get the two analogous colors
     analog_card_color1 = Color::RGB.new(card_colors.first.red.to_i, card_colors.first.green.to_i, card_colors.first.blue.to_i).to_hsl
     analog_card_color2 = Color::RGB.new(card_colors.first.red.to_i, card_colors.first.green.to_i, card_colors.first.blue.to_i).to_hsl
-    analog_card_color1.hue=(analog_card_color1.hue+30)
-    analog_card_color2.hue=(analog_card_color2.hue-30)
+    analog_card_color1.hue=(analog_card_color1.hue+60)
+    # analog_card_color2.hue=(analog_card_color2.hue-30)
 
-    # convert back to array of RGB objects
-    analog_card_colors = [analog_card_color1.to_rgb, analog_card_color2.to_rgb]
-    # get difference of the two analogous colors with the best background color and get the lowest score
-    diff = []
-    analog_card_colors.each do |a_color|
-      diff << get_color_diff(a_color, background_rgb[0][0])
-    end
-    diff.min
+    # # convert back to array of RGB objects
+    # analog_card_colors = [analog_card_color1.to_rgb, analog_card_color2.to_rgb]
+    # # get difference of the two analogous colors with the best background color and get the lowest score
+    # diff = []
+    # analog_card_colors.each do |a_color|
+    #   diff << get_color_diff(a_color, background_rgb[0][0])
+    # end
+    # diff.min
+
+    get_color_diff(analog_card_color1.to_rgb, background_rgb[0][0])
   end
 
   def self.contrast(card, background)
