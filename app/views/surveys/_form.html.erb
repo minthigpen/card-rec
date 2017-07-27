@@ -13,9 +13,11 @@
 
 
   <div class="background">
-    <%- @matches.each do |m| %>
-      <%= render 'background_selection', match: m, card: @card%>
-    <%-end%>
+    <div class="match-selection-container">
+      <%- @matches.each do |m| %>
+        <%= render 'background_selection', match: m, card: @card%>
+      <%-end%>
+    </div>
     <%= form.button :submit%>
   </div>
 <% end %>
