@@ -7,9 +7,6 @@ class Card < Image
     matches.where(best_score: true)
   end
 
-
-  private
-
   def initialize_matches 
     Rule.all.each do |rule|
       best_score = Float::INFINITY
