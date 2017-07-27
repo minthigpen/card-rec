@@ -4,7 +4,7 @@ class Rule < ApplicationRecord
   PIX_FRAC_THRESHOLD = 0.001
   SCORE_THRESHOLD = 0.01
 
-
+  # helper method to get color difference of two RGB objects
   def self.get_color_diff (rgb_color1, rgb_color2)
     # make dummy rgb object
     @dummy_rgb ||= Color::RGB.new(0,0,0)
@@ -21,34 +21,31 @@ class Rule < ApplicationRecord
   # the complementary color of the card's 'main color'
   def self.compl_color(card, background)
 
-    # if gray scale, just show the opposite end of scale
+    # sort colors related to card and background by score
+    card_colors = card.colors.sort{|a, b| a.score <=> b.score}
+    background_colors = background.colors.sort {|a, b| a.score <=> b.score}
+    # convert background color profiles to RGB objects
+    background_rgb = to_rgb_obj(background_colors)
 
-    # there are several different colors that you could find the complement of - either the most highest score color or highest pixel fraction color 
-      # though edge case is that often the most dominant colors are the white background of a card. make this a method so that you can reuse for analagous
+    # get the target complementary color of card color with highest score and highest pixel fraction
+    # NOTE: most highest pixel colors will be white
 
-    # get the most dominant colors for cards and backgrounds
-    card_colors = card.colors.where('pixel_fraction > ?', PIX_FRAC_THRESHOLD).where('score > ?', SCORE_THRESHOLD).to_a
-    background_colors = background.colors.where('pixel_fraction > ?', PIX_FRAC_THRESHOLD).where('score > ?', SCORE_THRESHOLD).to_a
+    # convert to HSL in order to get the complement color
+    compl_card_color = Color::RGB.new(card_colors.first.red.to_i, card_colors.first.green.to_i, card_colors.first.blue.to_i).to_hsl
+    compl_card_color.hue=(compl_card_color.hue+180)
 
-    rand
-    # # get the card and background color with the highest score and convert to hsv
-    # best_card_color = get_best_color_hsv(card.colors)
-    # best_background_color = get_best_color_hsv(background.colors)
+    diff = []
 
-    # # get the hue of the complimentary color 
-    # comp_hue = (best_card_color.first + 180) % 360
-    # # also get the comp_value and comp_saturation ***********
+    # compare each background color with the target complement color and get the minimum distance 
+    # NOTE: weight by score maybe instead of just iterate through all of them??? 
+    background_rgb.map do |background_rgb_color|
+      diff << get_color_diff(compl_card_color.to_rgb,background_rgb_color[0])
+    end 
 
-    # # if card color is lighter than
-    # card_color = [comp_hue, best_card_color[1],best_card_color[2]]
-    # puts "HSV best card color is #{best_card_color}"
-    # puts "HSV best background color is #{best_background_color}"
-    # puts "HSV for COMPLEMENTARY COLOR IS #{card_color}"
+    diff.min
 
-    # # get difference of colors and that's the score
-    # cd = get_color_diff(card_color,best_background_color)
-
-
+    # what about grey scale?
+    # # also get the comp_value and comp_saturation *********** --> this might be implemented in contrast
 
   end
 
@@ -73,13 +70,19 @@ class Rule < ApplicationRecord
 
   def self.highlight(card, background)
     # # highlights just take the color that is the most dominant (regardless of pixel fraction and picks a background that highlights this color
-    card_highlight_color = card.colors.max_by(&:score)
-    background_highlight_color = background.colors.max_by(&:score)
+        # sort colors related to card and background by score
+    card_colors = card.colors.sort{|a, b| a.pixel_fraction <=> b.pixel_fraction}
+    background_colors = background.colors.sort {|a, b| a.score <=> b.score}
 
-    card_highlight_rgb = Color::RGB.new(card_highlight_color.red.to_i, card_highlight_color.green.to_i, card_highlight_color.blue.to_i)
-    background_highlight_rgb = Color::RGB.new(background_highlight_color.red.to_i, background_highlight_color.green.to_i, background_highlight_color.blue.to_i)
+    card_rgb = to_rgb_obj(card_colors)
+    background_rgb = to_rgb_obj(background_colors)
 
-    get_color_diff(card_highlight_rgb, background_highlight_rgb)
+
+    # get the second most highly scored color if the array contains more than one color
+    card_rgb.size > 1 ? card_highlight_rgb = card_rgb[1][0] : card_highlight_rgb = card_rgb[0][0]
+
+    # compare the highlight color to the main background rgb color with highest score
+    get_color_diff(card_highlight_rgb, background_rgb[0][0])
 
   end
 
