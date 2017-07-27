@@ -1,0 +1,5 @@
+<div class="dominant-colors">
+  <% color_profiles.each do |color_profile| %>
+    <div class="color-swatch" style="width: <%= color_profile.pixel_fraction * 100 %>%; background-color: #<%= color_profile.rgb %>"></div>
+  <% end %>
+</div>
