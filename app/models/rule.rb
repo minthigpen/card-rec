@@ -15,7 +15,7 @@ class Rule < ApplicationRecord
 
     # convert to HSL in order to get the complement color
     compl_card_color = Color::RGB.new(card_colors.first.red.to_i, card_colors.first.green.to_i, card_colors.first.blue.to_i).to_hsl
-    compl_card_color.hue=(compl_card_color.hue+180)
+    compl_card_color.hue=(compl_card_color.hue-180)
 
     # get the difference of the target complementary color for the main card color and the background color with the highest pixel fraction
     best_background_color = Color::RGB.new(background_colors.first.red.to_i, background_colors.first.green.to_i, background_colors.first.blue.to_i)
@@ -76,35 +76,50 @@ class Rule < ApplicationRecord
     # convert to HSL in order to get the two analogous colors
     analog_card_color1 = Color::RGB.new(card_colors.first.red.to_i, card_colors.first.green.to_i, card_colors.first.blue.to_i).to_hsl
     analog_card_color2 = Color::RGB.new(card_colors.first.red.to_i, card_colors.first.green.to_i, card_colors.first.blue.to_i).to_hsl
-    analog_card_color1.hue=(analog_card_color1.hue+60)
-    # analog_card_color2.hue=(analog_card_color2.hue-30)
+    analog_card_color1.hue=(analog_card_color1.hue+30)
+    analog_card_color2.hue=(analog_card_color2.hue-30)
 
-    # # convert back to array of RGB objects
-    # analog_card_colors = [analog_card_color1.to_rgb, analog_card_color2.to_rgb]
-    # # get difference of the two analogous colors with the best background color and get the lowest score
-    # diff = []
-    # analog_card_colors.each do |a_color|
-    #   diff << get_color_diff(a_color, background_rgb[0][0])
-    # end
-    # diff.min
+    # convert back to array of RGB objects
+    analog_card_colors = [analog_card_color1.to_rgb, analog_card_color2.to_rgb]
+    # get difference of the two analogous colors with the best background color and get the lowest score
+    diff = []
+    analog_card_colors.each do |a_color|
+      diff << get_color_diff(a_color, background_rgb[0][0])
+    end
+    diff.min
 
-    get_color_diff(analog_card_color1.to_rgb, background_rgb[0][0])
+    # get_color_diff(analog_card_color1.to_rgb, background_rgb[0][0])
   end
 
   def self.contrast(card, background)
     # highest contrast comes from getting the a combination of Hue and Saturation and Lightness
+    card_colors = card.colors.sort{|a, b| a.pixel_fraction <=> b.pixel_fraction}.reverse!
+    background_colors = background.colors.sort {|a, b| a.pixel_fraction <=> b.pixel_fraction}.reverse!
+    background_rgb = to_rgb_obj(background_colors)
 
-    # finds the maximum distance on both H, S, V
+    main_card_color = card_colors.first
+    contrast_color_hsl = Color::RGB.new(main_card_color.red,main_card_color.green,main_card_color.blue).to_hsl
+    
+    # if it's darker then lighten
+    if contrast_color_hsl.luminosity < 50
+      contrast_color_hsl.luminosity=(contrast_color_hsl.luminosity+50)
+    # else if it's lighter then darken
+    else
+      contrast_color_hsl.luminosity=(contrast_color_hsl.luminosity-50)
+    end
 
-    # account for white and black
-    # account for greys
-    # account for low saturation
-    # account of hue difference
-    # account for neutrals 
-    # account for 
-
-
-    rand
+    # if there is color then adjust saturation
+    if contrast_color_hsl.saturation != 0
+      if contrast_color_hsl.saturation < 50
+        contrast_color_hsl.saturation=(contrast_color_hsl.saturation+50)
+      else
+        contrast_color_hsl.saturation=(contrast_color_hsl.saturation-50)
+      end
+      # also adjust the hue
+      contrast_color_hsl.hue=(contrast_color_hsl.hue-180)
+    end
+    # does this account for neutrals?
+    get_color_diff(contrast_color_hsl.to_rgb, background_rgb[0][0])
   end
 
   # helper method to return array of RGB objects
