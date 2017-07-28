@@ -7,15 +7,22 @@ class Rule < ApplicationRecord
   # get a card's color profile and find a backdrop that is the most closely associated to 
   # the complementary color of the card's 'main color'
   def self.compl_color(card, background)
-
     # sort card colors by score to get the 'main focus' color of the card since a lot of cards are on white backgrounds
-    card_colors = card.colors.sort{|a, b| a.score <=> b.score}.reverse!
+    card_colors_hsl = to_hsl(card.colors.sort{|a, b| b.score <=> a.score})
     # sort background colors by pixel fraction since backgrounds are simpler
-    background_colors = background.colors.sort {|a, b| a.pixel_fraction <=> b.pixel_fraction}.reverse!
+    background_colors = background.colors.sort {|a, b| b.pixel_fraction <=> a.pixel_fraction}
+    # takes out the color in the array of card colors that is close to 'white'
+    card_colors_hsl.reject! do |color|
+      color.saturation < 10 && color.luminosity > 90
+    end
+    # without the white color, assuming the list of card colors are ranked by score
+    main_card_color = card_colors_hsl.first
 
-    # convert to HSL in order to get the complement color
-    compl_card_color = Color::RGB.new(card_colors.first.red.to_i, card_colors.first.green.to_i, card_colors.first.blue.to_i).to_hsl
-    compl_card_color.hue=(compl_card_color.hue-180)
+    # change the hue
+    main_card_color.hue=(main_card_color.hue-180)
+    # main_card_color.saturation=(0)
+    # main_card_color.luminosity=(1)
+    compl_card_color = main_card_color
 
     # get the difference of the target complementary color for the main card color and the background color with the highest pixel fraction
     best_background_color = Color::RGB.new(background_colors.first.red.to_i, background_colors.first.green.to_i, background_colors.first.blue.to_i)
@@ -123,14 +130,20 @@ class Rule < ApplicationRecord
   end
 
   # helper method to return array of RGB objects
-  def self.to_rgb_obj (color_profile)
-    color_profile.map do |color|
+  def self.to_rgb_obj(color_profiles)
+    color_profiles.map do |color|
       [Color::RGB.new(color.red.to_i, color.green.to_i, color.blue.to_i), color.score, color.pixel_fraction]
     end
   end
 
+  def self.to_hsl(color_profiles)
+    color_profiles.map do |color|
+      Color::RGB.new(color.red.to_i, color.green.to_i, color.blue.to_i).to_hsl
+    end
+  end
+
   # helper method to get color difference of two RGB objects
-  def self.get_color_diff (rgb_color1, rgb_color2)
+  def self.get_color_diff(rgb_color1, rgb_color2)
     # make dummy rgb object
     @dummy_rgb ||= Color::RGB.new(0,0,0)
     # convert RGB objects to CIE Lab Objects
