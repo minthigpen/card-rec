@@ -36,17 +36,14 @@ class SurveysController < ApplicationController
   # POST /surveys
   # POST /surveys.json
   def create
-
     @survey = Survey.create!(card_id: params[:card_id_string].to_i)
 
     params[:match_selection].each do |match_id_string, value_string|
-      @survey.responses.create(match_id: match_id_string.to_i, selected: value_string == '1' ? true : false)
+      @survey.responses.create(match_id: match_id_string.to_i, selected: value_string == "1")
+
     end
 
     redirect_to action: 'new'
-  
-
-
   end
 
   # PATCH/PUT /surveys/1
