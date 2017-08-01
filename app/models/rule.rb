@@ -4,6 +4,10 @@ class Rule < ApplicationRecord
   PIX_FRAC_THRESHOLD = 0.001
   SCORE_THRESHOLD = 0.01
 
+  def self.random(card, background)
+    rand
+  end
+
   # get a card's color profile and find a backdrop that is the most closely associated to 
   # the complementary color of the card's 'main color'
   def self.compl_color(card, background)

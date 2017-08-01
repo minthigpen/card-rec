@@ -7,6 +7,6 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 # Populate Rules table
-Rule.create([{ name: 'compl_color' }, { name: "similarity" }, { name: "highlight" }, { name: "analogous_color" }, { name: "contrast" }])
+Rule.create([{ name: 'random' }, { name: 'compl_color' }, { name: "similarity" }, { name: "highlight" }, { name: "analogous_color" }, { name: "contrast" }])
 
 # bin/rake db:seed
