@@ -5,10 +5,14 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end 
 
-# Ruby Stats is a port of the statistics libraries from PHPMath. 
-#Probability distributions include binomial, beta, and normal distributions with PDF, 
-# CDF and inverse CDF as well as Fisher's Exact Test.
+# NMatrix is a fast numerical linear algebra library for Ruby, with dense and sparse matrices
+gem 'nmatrix', '~> 0.2.3'
+
+# stats gems
 gem 'rubystats', '~> 0.2.6'
+gem 'simple-random', '~> 1.0.0'
+
+
 gem 'pg'
 # provide basic RGB, CMYK, HSL, and other colourspace manipulation support 
 gem 'color', '~> 1.8'
