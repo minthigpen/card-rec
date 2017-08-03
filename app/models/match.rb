@@ -4,7 +4,7 @@ class Match < ApplicationRecord
   belongs_to :background
   belongs_to :rule
 
-  def beta_samp(a,b)
+  def beta_sample(a,b)
     # return sampling score
     SimpleRandom.new.beta(a, b)
   end
