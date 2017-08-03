@@ -6,7 +6,9 @@ class CreateMatches < ActiveRecord::Migration[5.1]
       t.integer :rule_id
       t.float :score
       t.boolean :best_score
-
+      t.integer :a
+      t.integer :b
+      
       t.timestamps
     end
   end
