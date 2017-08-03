@@ -5,6 +5,10 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end 
 
+# Ruby Stats is a port of the statistics libraries from PHPMath. 
+#Probability distributions include binomial, beta, and normal distributions with PDF, 
+# CDF and inverse CDF as well as Fisher's Exact Test.
+gem 'rubystats', '~> 0.2.6'
 gem 'pg'
 # provide basic RGB, CMYK, HSL, and other colourspace manipulation support 
 gem 'color', '~> 1.8'
