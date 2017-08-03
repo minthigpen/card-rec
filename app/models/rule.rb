@@ -15,13 +15,17 @@ class Rule < ApplicationRecord
     card_colors_hsl = to_hsl(card.colors.sort{|a, b| b.score <=> a.score})
     # sort background colors by pixel fraction since backgrounds are simpler
     background_colors = background.colors.sort {|a, b| b.pixel_fraction <=> a.pixel_fraction}
+    
+    main_card_color = card_colors_hsl.first
     # takes out the color in the array of card colors that is close to 'white'
+    
     card_colors_hsl.reject! do |color|
       color.saturation < 10 && color.luminosity > 90
     end
     # without the white color, assuming the list of card colors are ranked by score
-    main_card_color = card_colors_hsl.first
-
+    if card_colors_hsl.size > 0
+      main_card_color = card_colors_hsl.first
+    end
     # change the hue, saturation and luminosity of main card
     main_card_color.hue=(main_card_color.hue-180)
     main_card_color.luminosity=(50)

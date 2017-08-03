@@ -5,7 +5,7 @@
 
     <%= render 'dominant_colors_swatch', color_profiles: match.normalized_colors %>
 
-    <div class="rule-name"><%= match.rule.name%></div>
+    <!-- <div class="rule-name"><%= match.rule.name%></div> -->
 
     <%= hidden_field_tag'card_id_string', "#{card.id}" %>
     <%= hidden_field_tag "match_selection[#{match.id}]", '0' %>

@@ -18,8 +18,11 @@ class SurveysController < ApplicationController
     # get card and make matches and store those in instance variable 
     @card = params[:card_id] ? Card.find(params[:card_id]) : Card.order("RANDOM()").first
     @card_swatch_colors = SwatchPresenter.new(@card).normalized_colors
-    @card.initialize_matches unless @card.matches.any?
-    @matches = @card.best_matches.order(:rule_id).includes(background: :colors).map{ |match| MatchPresenter.new(match) }
+    # @card.initialize_matches unless @card.matches.any?
+    @card.initialize_matches
+    @matches = @card.best_matches.includes(background: :colors).map{ |match| MatchPresenter.new(match) }.sort{ |a, b| b.beta_sample <=> a.beta_sample }
+
+    @best_match = @matches.shift
 
     @survey = Survey.new
   end
