@@ -1,5 +1,5 @@
-.rule-name {
-  font-family: "Basis Grotesque";
+.selected {
+  outline-color: #005AC8;
 }
 
 .card_container {
@@ -39,6 +39,8 @@
   width: 100%;
   text-align: center;
 }
+
+.background img.highlight { border: 5px solid blue; }
 
 .background img {
   border: 1px solid;

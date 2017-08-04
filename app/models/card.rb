@@ -4,11 +4,11 @@ class Card < Image
   has_many :backgrounds, through: :matches
 
 
-  def best_matches
-    # limit here or in surveys_controller?
-    # sort by beta sample
-    self.matches.sort{ |a, b| b.beta_sample <=> a.beta_sample }.limit(6)
-  end
+  # def best_matches
+  #   # limit here or in surveys_controller?
+  #   # sort by beta sample
+  #   self.matches
+  # end
 
   # set the score and priors
   def initialize_matches 
@@ -26,7 +26,7 @@ class Card < Image
       end
 
       # add all matches with their score
-      self.matches << Match.create(background: background, rule: rule, score: score, best_score: false, alpha: 1, beta: 1)
+      self.matches << Match.create(background: background, rule: Rule.find(4), score: score, best_score: false, alpha: 1, beta: 1)
      
     end
 
@@ -43,10 +43,15 @@ class Card < Image
 
       # given variance and expected value, solve system of equations to get alpha and beta, update table
       calc_alpha = (((1-exp_val)/var) - (1/exp_val))*(exp_val**2)*500
-      calc_beta = calc_alpha*((1/exp_val)-1)*500
+      calc_beta = calc_alpha*((1/exp_val)-1)*5
+
+     
 
       m.update(alpha: calc_alpha)
       m.update(beta: calc_beta)
+      # puts m.id
+      # puts calc_alpha
+      # puts calc_beta
 
     end
 

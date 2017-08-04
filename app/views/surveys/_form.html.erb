@@ -14,10 +14,13 @@
 
   <div class="background">
     <div class="match-selection-container">
+      <%= render 'background_selection', match: @best_match, card: @card, rec: true %>
       <%- @matches.each do |m| %>
-        <%= render 'background_selection', match: m, card: @card%>
+        <%= render 'background_selection', match: m, card: @card, rec: false%>
       <%-end%>
     </div>
+    <!-- set hidden field tag to be updated with value of last image clicked -->
+    <%= hidden_field_tag "match_selection" , 'nil'%>
     <%= form.button :Submit, class: "button"%>
   </div>
 <% end %>
