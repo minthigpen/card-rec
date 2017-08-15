@@ -5,6 +5,10 @@
 
     <%= render 'dominant_colors_swatch', color_profiles: match.normalized_colors %>
 
+    <% if "#{rec}" == "true" %>
+      <div class="rule-name"> Recommended Backdrop</div>
+      <% end %>
+
     <!-- <div class="rule-name"><%= match.rule.name%></div> -->
     <!-- <div class="rule-name"><%= match.background.id%></div> -->
 

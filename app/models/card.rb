@@ -4,12 +4,6 @@ class Card < Image
   has_many :backgrounds, through: :matches
 
 
-  # def best_matches
-  #   # limit here or in surveys_controller?
-  #   # sort by beta sample
-  #   self.matches
-  # end
-
   # set the score and priors
   def initialize_matches 
     
@@ -36,22 +30,29 @@ class Card < Image
 
     ordered_matches.each do |m|
       #after ordering the matches by score ascending, update their priors
-      exp_val = 1 - (m.score/highest_score)
+      puts m.score
+      exp_val = 1 - ((m.score-lowest_score)/(highest_score-lowest_score))
       # bounded by (0,1)
-      var = 0.1
+      var = 0.01
       # bounded by (0,0.25)
-
       # given variance and expected value, solve system of equations to get alpha and beta, update table
-      calc_alpha = (((1-exp_val)/var) - (1/exp_val))*(exp_val**2)*500
-      calc_beta = calc_alpha*((1/exp_val)-1)*5
 
-     
+      if exp_val == 1.0
+        calc_alpha = ( (1-0.98)/var - (1/0.98) )*(0.99**2)*10
+        calc_beta = calc_alpha*((1/0.99)-1)    
+      elsif exp_val == 0.0
+        calc_alpha = 1
+        calc_beta = 1
+      else
+        calc_alpha = ( (1-exp_val)/var - (1/exp_val) )*(exp_val**2)*10
+        calc_beta = calc_alpha*((1/exp_val)-1)
+      end
 
       m.update(alpha: calc_alpha)
       m.update(beta: calc_beta)
-      # puts m.id
-      # puts calc_alpha
-      # puts calc_beta
+      puts m.id
+      puts calc_alpha
+      puts calc_beta
 
     end
 

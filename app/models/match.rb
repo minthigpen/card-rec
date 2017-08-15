@@ -3,6 +3,7 @@ class Match < ApplicationRecord
   belongs_to :card
   belongs_to :background
   belongs_to :rule
+  belongs_to :response
 
   def beta_sample(a,b)
     # return sampling score

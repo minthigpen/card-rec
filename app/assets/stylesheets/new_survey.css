@@ -1,5 +1,6 @@
 .selected {
-  outline-color: #005AC8;
+  border: 6px solid;
+  border-color: #005AC8;
 }
 
 .card_container {
@@ -40,11 +41,11 @@
   text-align: center;
 }
 
-.background img.highlight { border: 5px solid blue; }
 
 .background img {
-  border: 1px solid;
-  border-color: #c6c6c6;
+/*  outline: #005AC8 thick;*/
+  /*border: 1px solid;*/
+  /*border-color: #c6c6c6;*/
   object-fit: cover;
   width:200px;
   height:200px;
