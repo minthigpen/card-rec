@@ -1,7 +1,7 @@
 class Response < ApplicationRecord
 
 	belongs_to :survey
-  has_one :match
+  belongs_to :match
 
 end
 
