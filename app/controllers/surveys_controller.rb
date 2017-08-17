@@ -67,6 +67,7 @@ class SurveysController < ApplicationController
       updated_beta = recommended_match.beta + 1
 
       recommended_match.update_columns(beta: updated_beta)
+      # raise "BETA"
     end
 
     # params[:match_selection].each do |match_id_string, value_string|
