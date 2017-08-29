@@ -8,6 +8,6 @@
     <div class="rule-name"><%= match.rule.name%></div>
 
     <%= hidden_field_tag'card_id_string', "#{card.id}" %>
-    <%= hidden_field_tag "match_selection[#{match.id}]", '0' %>
-    <%= check_box_tag "match_selection[#{match.id}]"%>
+    <%= hidden_field_tag "match_selection[][match_id]", match.id %>
+    <%= check_box_tag "match_selection[][selected]"%>
 </div>
